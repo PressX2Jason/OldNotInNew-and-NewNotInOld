@@ -16,7 +16,7 @@ def getNewFiles() -> Dict[str, str]:
     return files
 
 def getSymmetricDifference(left : Dict[str, str], right : Dict[str, str]) -> Dict[str, Dict[str, str]]:
-    for key, value in left.copy().items():
+    for key in left.copy().keys():
         if key in right:
             del right[key]
             del left[key]
