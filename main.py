@@ -1,21 +1,56 @@
 from typing import Dict
+import argparse
 
 
-def getOldFiles() -> Dict[str, str]:
-    files = {
-        '1111111111111111111111111111111111111111': 'file 1.txt',
-        '2222222222222222222222222222222222222222': 'file 2.txt'
-    }
-    return files
+def parserSetup():
+    parser = argparse.ArgumentParser(
+        description='Find old files not in new, and new files not in old.')
+    parser.add_argument(
+        'inputOldFileName',
+        help='the name of the file containing old file names (default: Old.sha1.txt).',
+        type=str,
+        nargs='?',
+        default='Old.sha1.txt'
+    )
+    parser.add_argument(
+        'inputNewFileName',
+        help='the name of the file containing new file names (default: New.sha1.txt).',
+        type=str,
+        nargs='?',
+        default='New.sha1.txt'
+    )
+    parser.add_argument(
+        'outputOldFileName',
+        help='the name of the file containing old file names (default: OldNotInNew.txt).',
+        type=str,
+        nargs='?',
+        default='OldNotInNew.txt'
+    )
+    parser.add_argument(
+        'outputNewFileName',
+        help='the name of the file containing new file names (default: NewNotInOld.txt).',
+        type=str,
+        nargs='?',
+        default='NewNotInOld.txt'
+    )
+    return parser.parse_args()
 
 
-def getNewFiles() -> Dict[str, str]:
-    files = {
-        '1111111111111111111111111111111111111111': 'file 4.txt',
-        '7777777777777777777777777777777777777777': 'file 2.txt',
-        '3333333333333333333333333333333333333333': 'file 3.txt'
-    }
-    return files
+def getSha1FileNames(filePath: str) -> Dict[str, str]:
+    res = {}
+    endOfSha1 = 40
+    with open(filePath) as f:
+        for line in f.readlines():
+            sha1 = line[:endOfSha1]
+            fileName = line[endOfSha1 + 1:]
+            res[sha1] = fileName
+    return res
+
+
+def writeSha1FileNames(outputFileName: str, sha1FileNames: Dict[str, str]):
+    with open(outputFileName, 'w') as f:
+        for sha1, fileName in sha1FileNames.items():
+            f.writelines(f'{sha1} {fileName}')
 
 
 def getSymmetricDifference(left: Dict[str, str], right: Dict[str, str]) -> Dict[str, Dict[str, str]]:
@@ -26,19 +61,16 @@ def getSymmetricDifference(left: Dict[str, str], right: Dict[str, str]) -> Dict[
     return {'old': left, 'new': right}
 
 
-def main():
-    oldFiles = getOldFiles()
-    newFiles = getNewFiles()
+def main(args):
+    oldFiles = getSha1FileNames(args.inputOldFileName)
+    newFiles = getSha1FileNames(args.inputNewFileName)
+
     symmetricDiffFiles = getSymmetricDifference(oldFiles, newFiles)
 
-    print('old')
-    for oldFiles in symmetricDiffFiles['old']:
-        print(oldFiles)
-
-    print('new')
-    for newFiles in symmetricDiffFiles['new']:
-        print(newFiles)
+    writeSha1FileNames(args.outputOldFileName, symmetricDiffFiles['old'])
+    writeSha1FileNames(args.outputNewFileName, symmetricDiffFiles['new'])
 
 
 if __name__ == "__main__":
-    main()
+    args = parserSetup()
+    main(args)
