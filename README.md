@@ -1,9 +1,11 @@
 # OldNotInNew-and-NewNotInOld
 Coding exercise see this [pdf](OldNotInNew&#32;and&#32;NewNotInOld.pdf) for more details
 
-# Usage:
+## Usage:
 ````
-py .\main.py -h
+>py .\main.py -h
+````
+````
 usage: main.py [-h] [inputOld] [inputNew] [outputOld] [outputNew]
 
 Find old files not in new, and new files not in old.
