@@ -1,9 +1,14 @@
 # OldNotInNew-and-NewNotInOld
 Coding exercise see this [pdf](OldNotInNew&#32;and&#32;NewNotInOld.pdf) for more details
 
-## Usage:
+
+### Setup:
 ````
->py .\main.py -h
+> pip install requirements.txt
+````
+### Usage:
+````
+> py .\main.py -h
 ````
 ````
 usage: main.py [-h] [inputOld] [inputNew] [outputOld] [outputNew]
