@@ -6,7 +6,7 @@ import logging
 
 def parserSetup() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description='find old files not in new, and new files not in old.'
+        description='find old files not in new, and new files not in old'
     )
     parser.add_argument(
         '-v', '--verbose',
@@ -123,7 +123,7 @@ def writeSha1FileNames(outputFileName: str, sha1FileNames: Dict[str, str]):
 def getSymmetricDifference(left: Dict[str, str], right: Dict[str, str]) -> Dict[str, Dict[str, str]]:
     logger = logging.getLogger(__name__)
 
-    # make a copy of the keys so we can change the real collection
+    # make a copy of the keys so we can modify the collection 
     logger.debug('starting symmetric difference')
     removed = 0
     for key in left.copy().keys():
