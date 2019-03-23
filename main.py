@@ -123,18 +123,20 @@ def writeSha1FileNames(outputFileName: str, sha1FileNames: Dict[str, str]):
 def getSymmetricDifference(left: Dict[str, str], right: Dict[str, str]) -> Dict[str, Dict[str, str]]:
     logger = logging.getLogger(__name__)
 
-    # make a copy of the keys so we can change the real collection 
+    # make a copy of the keys so we can change the real collection
     logger.debug('starting symmetric difference')
     removed = 0
     for key in left.copy().keys():
         logger.debug(f'\tprocessing {key} {left[key]}')
         if key in right:
-            logger.debug(f'\t\t {key} {left[key]} found in both sides, removing from both')
+            logger.debug(
+                f'\t\t {key} {left[key]} found in both sides, removing from both')
             del right[key]
             del left[key]
             removed += 1
     logger.debug('symmetric difference calucation complete')
-    logger.info(f'{len(left)} old files, {len(right)} new files {removed} removed')
+    logger.info(
+        f'{len(left)} old files, {len(right)} new files {removed} removed')
     return {'old': left, 'new': right}
 
 
